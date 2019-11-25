@@ -1,0 +1,554 @@
+1.定义变量要用var 否则会污染全局  var i = 1；
+2.null和undefined两个不同的类型。没有定义原生类型如int，str，bool等返回undefined，没有定义对象或者数组则返回null，比如取dom标签没取到或者a.name name不存在的时候返回null
+3.定义的数组类型的变量，索引永远是递增不会空缺，按顺序排列，var arr = [1,'sss',3,false]
+4.9+3+'fjdksl'+1+2 = 12fjdksl12 一但碰到非法数学计算的字符后面的一律按字符串拼接不再相加。
+5.js中逻辑运算返回的是:最早能判断整个表达式结果的值 
+  var a = false;
+  var b = 7;
+  var c = true;
+  var d = a || b || c; 返回7，后面的被短路了。
+
+6.循环结构的一些问题：
+  如何循环取出数组的值：
+  var arr = ['fd',1,true,'fjsdlk'];
+  for(var i =0; i<arr.length;i++) {
+      console.log(i);
+      console.log(arr[i]);
+  }// 循环取出来数组的k和数组的值
+
+  如何循环取出对象的k和对象的值:
+  var obj = {name:'michael',age:20,area:'beijing'}
+  for(var k in obj) {
+      console.log(obj.k)//返回undefined因为obj里面没有k属性只有name，age，area三个属性
+      console.log(obj[k])//正确返回
+      console.log(obj['k'])//等价于console.log(obj.k)
+  }
+
+7.str,int，bool等变量类型是原生方法，但是你要调用他的属性和方法的时候，系统会自动将其包装成一个对象，就有了str.length等。
+
+8.str.indexof() // 找不返回-1，找到返回位置。-1是是真
+9.date对象需要手动制造，str等可自动生成，Math直接用，random返回[0，1），
+10.    如果一个变量在函数里找不到会一直向上层找，并一直找到window对象。
+       var str = 'fdf' 是定义并赋值
+       str= 'fdf' 只是赋值没有定义，因此会一直往上找，最终找到window对象并污染window.str属性。
+
+
+#对象的操作可以总结为增删改查
+查：
+11.用id来查询返回一个对象
+   用标签来查询，返回的是一个对象集合，无论这个标签在这个dom中有一个还是多个
+   var p = document.getElementsByTagName('p'); p[1] =第二个对象。对象的集合和数组一样使用
+   对于表单元素，可以通过name来查找
+   document.getElementsByName（） 返回一个对象集合
+   根据类名来找对象
+   document.getElementsByClassName() 返回一个对象集合
+   找父子兄弟对象
+   //document.getElementById().childNodes 找子节点，包括空白节点
+   document.getElementById.children children属性不包括空白节点
+改：
+12.普通属性如name，id等可以直接通过obj.name等来操作
+   style属性需要通过obj.style.height来操作 如果css属性带有横线如：boder-top-style 则用obj.style.boderTopStyle来处理 标签里的style才可以取到对象，否则写在css文件里的取不到。
+   那如何获取运行时的style对象呢？ie9以下用：obj.currentStyle属性来获取，其他用window.getComputedStyle(obj,':伪类如after，如果不是伪类直接赋值null'),
+   class属性操作需要通过obj.className来操作
+删：
+13.找到要删除的元素，找到此元素的父元素，父元素删除此子元素。
+function de() {
+	var lis = document.getElementByTagName('li');
+	var lastli = lis[lis.length-1]
+	lastli.parentNode.removeChild(lastli)
+}
+
+增：
+14.创建对象；找到父对象；parent.obj.addchild()
+function add() {
+	var li = documentCreateElement('li');
+	var text = documentCreateElement('冬天');//js里面所有的都是对象，文字是文字对象
+	li.append(text)
+	document.getElementByTagName('ul')[0].append(li)
+}
+
+暴力操作节点：
+15.
+function add() {
+	var ul = document.getElementByTagName('ul');
+	ul.innerHtml = '<li>春</li><li>夏</li><li>秋</li>'
+	alert(ul.innerHtml);
+	ul.innerHtml += '<li>冬</li>'
+}
+
+16.全局函数 parseInt，null[]或者undefind[]直接这么搞会报错误。
+17.联动菜单 一个无限联动的例子:http://www.yanshiba.com/code/liandong/index.html
+
+18.window.setTimeOut('函数'，'毫秒数');
+
+19.setInterval('函数'，'毫秒数');
+
+20.var clock = setInterval('函数'，'毫秒数');
+   clearInterval(clock);
+
+21.dom中的常用事件
+   <input onfocus()>
+   onclick()
+   onfocus()
+   return onsubmit()调用才行。
+   onload()事件也可以用window.onload = function() {};如何不等待外部资源就load呢。
+
+22.结构样式行为分离，style拿到css文件里，通过属性来绑定事件。
+   document.getElementByTagName('div')[0].onclick = function() {}  = <div onclick='bian()'></div>
+23.事件对象：系统会把事件发生时的一些信息包成一个对象，作为第一个参数传给此事件触发的函数，需要定义一个形参如下面的ev
+   document.getElementByTagName('div')[0].onclick = function(ev) {console.log(ev)}//ev就是事件对象
+   事件对象中taget当时具体被触发的对象，ie<9 srcElement
+   时间对象的属性在ie和w2c中略不同
+24.事件委托：将事件委托到父节点监控，用taget属性找到子节点。
+
+
+js高级
+js函数运行中变量的来源有:ao，argument，this
+1.作用域：从内向外层找一只到window全局对象
+2.词法分析:
+  分析过程
+  在函数调用前，会形成一个这个函数的动态对象 active obj ao={}/空对象
+  第一步：分析函数的形参:ao.形参=undefined，紧接着接收实参 ao.形参=接收的参数
+  第二步：分析函数内的变量声明:如果已经有了ao.函数名就不处理，如果没有就初始定义ao.函数名=undefined
+  第三步：分析函数声明:（ao.函数名）这个属性无论有没有，都被此函数覆盖
+
+  执行过程：
+
+<script>
+function a(b) {
+    var b = 'hello'; // 变量声明部分在分析过程，变量赋值部分在执行过程
+	alert(b);
+	function b() {
+	  alert(b);
+	}
+	b();
+	alert(b);
+}
+a(1);
+</script>答案：function function
+区分两个
+<script>
+function a(b) {
+    var b = 'hello'; // 变量声明部分在分析过程，变量赋值部分在执行过程
+	alert(b);
+    b = function () {  // 这不是个函数声明，是个赋值过程。这句话会在执行过程中执行，而不会在分析过程中执行。
+	  alert(b);
+	}
+	b();
+	alert(b);
+}
+a(1);
+</script>1，function
+
+ 函数声明与函数表达式
+js被称为披着c外衣的lisp语言
+
+function t1() {}
+t2 = function(){}
+这两种方式，效果不同
+t1是函数声明，虽然全局也得到一个window.t1的变量，值是function
+t2只是个赋值的过程，值是右侧表达式的返回结果也就是函数，这个函数表达式和3*2这种表达式差不多。
+因此t1t2在词法分析时有本质区别，前者在词法分析阶段发挥作用，后者在运行阶段才发生作用。
+
+(function(window,undefined){})(window)
+(function(window,undefined){})// 内层表达式，返回值是函数，包在小括号里，当成表达式来执行
+(window)//这里的小括号就是直接调用了。
+//这种方法的好处：立即执行，不污染全局称为立即执行匿名函数表达式
+
+为什么传window，而又不传undefined；
+答：传window是为了速度，函数包函数层级太多一层层往外找的话很慢，传进来的话，window就在jquery的ao上。
+   声明了一个undefined而却不传值undefined是为了安全，在ie低版本中可以定义undefined=3可能被修改。因此声明又不传值则函数内部肯定是不会被外部污染的。
+
+作用域链指的是函数由最里层到最外层的ao链。分析阶段：先分析外部的ao链再分析内部的ao链 执行阶段从内向外找ao链
+
+3.argument
+ argument是一个长得很像数组的对象
+ argument是函数运行时的实参列表
+ （function(d,e,f){}）{'hello','world','!','test'}
+
+ test也在argument里面
+ argument.length  返回长度
+ argument.callee 返回当前运行的函数
+
+ ao->本函数ao上没有某个属性，则继续去外层函数ao上找，知道全局对象，叫做作用域链
+ argument每个函数都有自己的callee，但不向外层接着找arguments的相关属性，即不形成链
+
+
+
+ 4.this到底是什么
+ 
+ js中this的四种调用方式:
+ 无论什么方式调用都遵循，谁调用的对象就返回谁，第一种方式，没有对象只有函数这个函数也是window对象下的所以返回window。
+ 1.作为函数来调用
+function t() {
+	this.x=333;
+}
+/**
+作为普通函数来调用的时候，this指向null被解释成指向window，在最新的ecmascript中如果this为null则指向undefine，在之前解释成window
+*/
+t();
+
+2.作为对象的方法来调用
+此时this指向方法的调用者也就是这个对象
+不过函数声明的时候在是函数还是方法，都会指向调用的对象。
+
+var a={xx:333,t:function(){alert(this.xx)}} 
+a.t() //返回3
+
+var dog={xx:'wangwang'};
+dog.t=a.t //指针，内存中只有一个t，这个t函数中的this指向null,dog.t和a.t都是存了个指针.
+dog.t();//打印wangwang,调用t函数的时候t函数中的this指针自动指向了调用者
+
+(dog.t=a.t)()返回window.xx,有小括号代表是表达式，表达式就有返回值，这里返回值就是t()本身。
+
+函数里面有this操作的，不能直接调用，要用new来调用。否则会污染window
+
+3.作为构造函数调用的时候
+js没有类的概念，创造对象用构造函数来完成，或者直接用json格式{}定义。
+
+function Dog() {
+	this.name=name;
+	this.age=age;
+}
+
+var dog = new Dog('xiaohui',2);
+newdog发生了以下事情：
+a.系统创建空对象，空对象constructor属性指向dog函数
+b:把函数的this指向该空对象
+c:执行该函数
+d:返回该对象，就算在构造函数中加了return也不返回return值，但是下面的的确不执行了。
+
+
+4.函数通过call，apply来调用，可以解决对象调用此函数的时候需要定义一个属性来赋值这个函数。
+function t(num) {
+	alert(this.age);
+}
+var human={name:'lisi',age:28}
+t.call(human,5) 
+函数.call(对象，参数，……，……)：
+1.函数中的this指向对象
+2.把参数传给函数并运行这个函数
+
+
+5.闭包
+函数的作用域取决于声明时而不是调用时。
+闭包可以做generator;
+下面是一个全局计数器的例子，闭包可以避免污染全局变量，不用定义一个全局变量window.cnt 来计数,但是还是有个window.函数为了避免污染一般讲cnt绑在一个window固定的对象下如$.
+$.cnt = (function() {
+	var cnt = 0;
+	return function() {
+	   return ++cnt;
+	}
+})();
+
+alert(cnt());alert(cnt());alert(cnt()); //1,2,3
+
+6.js对象的特点
+ 不依赖于类而存在，可以直接json定义，这种json格式的对象也可以任意增加删除。
+ delete 对象.属性 就没了。
+
+ 创建对象的方法:
+ 1.直接json定义对象
+ 2.用有new function()创建
+
+funct Girl(){
+	var secret = 'aa'
+	this.getSecret = function() {
+        return secret;
+	}
+}
+
+var nv = new Girl();//利用闭包做一个私有属性
+
+
+7.原型链
+
+对象的原型链是自身的构造函数，构造函数的原型指向object对象。
+
+new一个构造函数的时候，实际上相当于生成了两个对象，一个是new出来的对象，一个是函数里prototype指向的对象(没定义的话就指向object对象),
+
+function tigert() {
+	this.bark = function(){alert(111);}
+}
+
+function cat() {
+	this.climb = function(){alert('climb')}
+}
+
+tiger.prototype = new cat();
+
+var oneTiger = new tiger();
+这句话执行的过程中，先new自己，然后有prototype属性，执行prototype属性new一个cat对象，cat这个构造函数有一个默认的prototype属性再new一个constructor指向cat()函数的对象，
+这个对象又有一个默认的prototype属性指向object，new这个对象的时候又new了一个object。
+
+
+总之，new一个对象的时候会new出来两个对象，一个是你想new的对象，一个是new一个你的原形对象，应该说原形对象的new在你想new的对象的前面。
+如果你定义了原形对象的话，就会new这个原形对象，如果你没定义的话，就会new一个没名字的对象，这个对象的constructor指向这个构造函数。如上面的cat()函数里没定义prototype，但是也会new一个对象，这个对象没名字，constructor指向cat()函数本身，这个函数的prototype又指向系统自带的object对象，最后一个原形对象是object。
+var oneTiger = new tiger();
+new tiger()->new cat()->new 一个中间的对象，这个对象的函数构造函数指向cat,prototype指向new object();最后的object对象最终指向null。
+原型链：
+老虎对象->猫对象->中间对象->Object对象->
+
+
+Object.prototype.sing=function() {alrt('sing')}//注意如何给Object添加一个方法，这里也说明prototype是一个对象，所以在对象上加一些函数。
+
+
+8.原型冒充及复制继承 这两种方法都是更改了自身的属性和方法，如果他们的继承对象发生了变化他们不会受到影响。
+
+function Cat(leg,tail) {
+	this.leg = leg;
+	this.tail=tail;
+	this.climb = function(){alert('climb');}
+}
+除了上面的原型链继承，还可以有：
+1.复制继承:把父对象的所有属性复制到自己对象上。
+function Tiger(leg,tail,color) {
+	this.color = color;
+	this.extend = function(parent){
+	    for(var key in parent){
+           this[key] = parent[key];
+	    }
+	}
+}
+
+var tiger = new Tiger('yellow');
+tiger.extend(); // 已经把cat上的属性和方法定义到了tiger这个对象上了。
+2.原型冒充:把想继承的对象里面的语句函数执行一遍
+function Tiger(leg,tail,color) {
+	this.color = color;
+	this.parent = Cat;
+	this.parent.apply(this,argument);
+	delete this.parent
+}
+
+
+9.多态 无
+
+10.静态方法
+直接在构造函数上加一个方法就是静态方法
+function Cat(leg,tail) {
+	this.leg = leg;
+	this.tail=tail;
+	this.climb = function(){alert('climb');}
+}
+
+Cat.sing = function() {alert('song');}这就是静态方法，new Cat的时候这个方法不会在对象里，调用这个方法直接用Cat.sing就行了。
+
+jquery加插件的时候可以直接用$.sing=function(){}来加插件
+
+
+11.事件
+相关术语
+1.dom对象的句柄 onclick='a()'等
+2.句柄上绑定的函数，也叫监听函数，回调函数
+3.事件发生的一瞬间的相关信息被打包成对象，这个对象叫事件对象。
+
+绑定事件的三种方式：
+1.html属性方式: <input onclick='a()'> 一般不要用，行为结构不分离
+2.对象属性方式:document.getElementById().onclick = function(){},缺点只能绑定一个事件
+3.addEventListener
+
+<div id=1></div>
+document.getElementById('1').addEventListener('click',functon(){alert(111);},false);//1.事件名都不要加on2.绑定事件中的函数里的this指的是当前对象,3.执行顺序是按照绑定顺序执行
+document.getElementById('1').addEventListener('click',functon(){alert(222);},false);//执行顺序是按照绑定顺序执行 
+事件模型:捕捉模型与冒泡模型,第三个参数如果不填是false也就是冒泡模型，不过建议填
+<div id='china'><div id='bj'><div id='haidian'></div></div></div>
+由外到内称为捕捉模型
+由内到外称为冒泡模型
+
+事件对象:
+document.getElementById('china').addEventListener('click',functon(ev){alert(222);},false);//ev是一个事件对象
+document.getElementById('bj').addEventListener('click',functon(ev){alert(222);},false);//ev是一个事件对象
+document.getElementById('haidian').addEventListener('click',functon(ev){alert(222);},false);//ev是一个事件对象
+
+事件停止传播与效果阻止:
+就是在捕捉或者冒泡的过程中，停止事件的传播
+document.getElementById('china').addEventListener('click',functon(ev){alert(222);ev.stopPropagation();},false);//ev.stopPropagation();阻止事件继续传播
+
+
+如何在提交之前验证提交的参数如果不正确不让提交呢。
+用ev.preventDefault();这个函数可以阻止事件的效果
+移除
+document.getElementById('china').removeEventListener('click',functon(ev){alert(222);ev.stopPropagation();},false);//ev.stopPropagation();阻止事件继续传播
+
+w3c和ie9的事件模型以下的区别:
+
+1.必须加on  比如click->onclick;
+2.绑定事件的函数不同 addEventListener->attackEvent();detachEvent
+3.不支持捕捉模型只支持冒泡模型<=ie6
+4.ie78中多个绑定事件可能随机先后发生。
+5.绑定的事件中this的指向问题，ie中指向window
+6.事件对象eventobj给了window.event,ie6以上已经支持w3c标准
+
+
+
+关于js异步的几点学习笔记：
+js是单线程的，理论上讲，只能顺序执行，但是为了防止一个耗时的io拖垮整个线程，所以我们就整异步，异步本质是一个消息队列，就是js会有一个消息队列，然后你只要用了异步的关键字，就会把这个耗时的io放到一个消息队列里面，等着到了设定的条件再来执行。我们下面讲如何异步编程：
+1.settimeout，这个关键字一用，意思就是多少s后再执行里面的函数；调用 setTimeout 函数会在一个时间段过去后在队列中添加一个消息。这个时间段作为函数的第二个参数被传入。如果队列中没有其它消息，消息会被马上处理。但是，如果有其它消息，setTimeout 消息必须等待其它消息处理完。因此第二个参数仅仅表示最少的时间 而非确切的时间
+2.绑定事件，就是某个事件执行后，再执行指定的函数。这个实现原理未知，但是绑定事件就是一个异步函数了。
+3.时间监听等；
+
+上面的实现原理我都不知道，也都不用关心。你想写异步，只能在你自己的函数里面放这些异步关键字就异步了。
+
+
+
+如何调用异步函数（promise、yield、async等都是调用异步函数（里面带settimeout类似这种的），你别去调用同步函数！！！！！！！！！！）呢：
+刚开始用的是回调函数，比如settimeout就是100ms后执行这个回调函数，但是如果另一个函数的运行需要依赖这个回调函数的结果呢，写的时候就只能把这个函数再写到这个回调函数的里面，层层回调很不方便；
+用promise就可以
+new Promise(function (resolve, reject) {
+    log('start new Promise...');
+    var timeOut = Math.random() * 2;
+    log('set timeout to: ' + timeOut + ' seconds.');
+    setTimeout(function () {
+        if (timeOut < 1) {
+            log('call resolve()...');
+            resolve('200 OK');
+        }
+        else {
+            log('call reject()...');
+            reject('timeout in ' + timeOut + ' seconds.');
+        }
+    }, timeOut * 1000);
+}).then(function (r) {
+    log('Done: ' + r);
+}).catch(function (reason) {
+    log('Failed: ' + reason);
+});
+
+
+new promise的时候会执行这个异步函数，你可以用then和catch接着用同步的书写习惯往下写。你不用层层调用了。
+这个文章讲的不错：https://www.cnblogs.com/fps2tao/p/10825816.html
+
+异步编程要解决什么：本来程序都是从上到下执行的，异步一次呢，就有了一个分支，异步一次就又有了一个分支，如下：
+
+start
+  |
+  |
+  |----|
+  |    |
+  |    |
+  |    |-->|
+  |        |
+  |        |
+       |<--|
+       |
+  1    2   3
+可以看到上面刚开始是一条线，然后因为异步，变成了两条线，三条线；让代码在任何一条线上单独执行都没什么难点，比如
+1.alert(1)
+  alert(2)
+  alert(3)
+  这就是在一条线上执行，正常写代码，没问题；
+2.function asyncFn() {
+    setTimeout(() => {
+        console.log('asyncFn');
+    }, 0)
+}
+
+function normalFn() {
+    console.log('normalFn');
+}
+
+asyncFn();
+normalFn();
+
+// normalFn
+// asyncFn
+  这就是第二种，第一条线第二条线都各自执行各自的，难点无非是先执行谁的问题：先打印normalFn，再打印asyncFn
+3. 还是上面两个函数，你期望先输出 asyncFn 再输出 normalFn
+   难点是这种，你想让异步的执行完了再执行同步的？你期望的是他在第二条线执行完了再执行第一条线，就是跨线了，这时候的解决方案是什么呢？
+
+function asyncFn(callback) {
+    setTimeout(() => {
+        console.log('asyncFn');
+        callback();
+    }, 0)
+}
+
+function normalFn() {
+    console.log('normalFn');
+}
+
+asyncFn(normalFn);
+
+// asyncFn
+// normalFn
+
+  很自然的，你想到了回调，你把normalFn这个函数当成一个参数穿进去，等asyncFn函数执行完了再调用你这个函数自然就是asyncFn在先，normalFn在后了。
+但是这种有个问题就是，层层嵌套，回调陷阱，看起来很麻烦；
+所以promise出现了：
+promise最大的优点就是，让你写的看起来更直观了：
+
+var p = new Promise(function async(resolve, reject){
+    // 这里是你的异步操作
+    setTimeout(function(){
+        if(true){
+            resolve(val);
+        }else{
+            reject(error);
+        }
+    }, 1000)
+})
+
+p.then(function(val){
+    console.log('resolve');
+}, function(){
+    console.log('reject');
+})
+
+ 这样调用更直观的知道，promise如果执行完了，你再执行then里的函数，如果promise执行错了，你就执行catch里面的函数；这样可以更好的让你控制哪个函数在哪条线里顺序执行；
+
+promise是更语义话了，比如then是然后执行的意思，但是还是不够简单，虽然我们知道是一条一条的then执行的，但是我们每执行一个函数都得调用一次then函数，且每个异步函数都得new promise一次，也挺累。
+
+
+随着时间的推移，又发明了generator这种方法，这种方法最大的好处是更像是在同步编程了；
+
+比如，你想异步出去一条线，你只要定义一个generator就行了，在这个generator里面执行你这条异步线儿里面的所有函数，这样不容易乱了。
+
+
+generator最大的特点是，他执行一次停一次，必须等到下一次next（）调用才会执行，因此我们只要在异步函数执行完了再调用next（）就可以实现让我们的yield后面的函数在异步函数执行完再执行；
+
+function* oneGenerator() {
+  yield asyncFn1();
+  yield asyncFn2();
+  yield normalFn3();
+}
+这个generator吧，你想让normalFn3这个正常的函数在上面两个异步函数都执行完了再执行，让asyncFn2在asyncFn1执行完了再执行，你就可以先执行asyncFn1，在asyncFn1函数最后再调用next()，然后就执行了asyncFn2，在asyncFn2最后再调用normalFn3就执行了normalFn3，这样这三个函数就是按照顺序执行的；
+
+
+但是yield写起来太麻烦了还要写一个自动调用next的类，于是，Async/Await腾空出世，这是为了异步专门发明的语法糖；
+function asyncFn1(){
+    console.log('asyncFn1');
+    return new Promise(function(resolve){
+        setTimeout(function(){
+            resolve('123');
+        }, 2000)
+    })
+}
+
+function asyncFn2() {
+    console.log('asyncFn2');
+    return new Promise(function(resolve){
+        setTimeout(function(){
+            resolve('456');
+        }, 2000)
+    })
+}
+
+async function asyncFn () {
+    var a = await asyncFn1();
+    var b = await asyncFn2();
+
+    console.log(a,b)
+}
+
+asyncFn();
+和yield基本相似。但是这样简化很多。这样就实现了异步函数的调用。
+
+
+异步编程之前最大的难点在于，你同步的执行过去了，异步的还在执行，这时候你同步的想用异步的结果你没法整了。
+yield本来是用于生成迭代器的，然后人们发现，这样yield有暂停的能力，可以在执行异步代码的时候，先暂停在这里，等执行完了再调用next继续执行下一步；对于同步代码，没有用yield的必要就不要用了。
+
+
+
+关于koa的一篇教程https://koa.bootcss.com 结合廖雪峰的看。总体上，next的就是把控制权交给下一个流程；
+

@@ -1,0 +1,227 @@
+1.tongji.baidu.com
+2.typora markdown编辑展示器
+
+3.web网页标准：结构标准(html),表现(css),行为(js)
+
+4.head 是浏览地址框以上的部分
+5.title内容在标签上表现
+6.标签中的 / 是关闭符 
+
+7.div标签都是占据整整一行
+  span 是一行上放好几个
+
+8.base 标签 全部链接都是新标签打开
+
+9.ul 里面只能放li标签，li里面可以放各种标签 li有很多属性，用css改，不要学自带属性。
+
+10.表格不用来布局，只用来展示数据, 只有tr行的概念，没有列的概念，td是在行里的单元格 cellspacing  单元格之间的距离的距离 cellpadding  单元格边和内容之间的距离 一般border cellpadding cellspaceing都是0  caption  表格标题
+
+11.表单  表单控件（input，textarea，select等） 提示信息  表单域<form></form>
+   radio需要名字一样  
+   lable只为了input而生，不用点击框也可以定位光标。
+
+12.行内样式：<p style='':''>
+   内部样式：写在html  head部份  style 标签下
+   外部样式：
+
+13. 块级元素：每个块元素占据一整行或多行，可设置高度宽度对齐外边距内边距等，总是从新行开始，宽度默认是容器的百分百，可以容纳其他块或者内联元素(p,h只能放文字，a不能再放a)，常见的有：div，h，p，ul，li，ol等。  
+    行内元素：没有长度和宽度，只靠内容中的文字或者图片来支撑，无法设置高度宽度对齐等，但水平方向的padding和marging可以设置，常常为了控制内容的样式，行内元素只能容纳内容或者行内元素不能容纳块元素，a比较特殊可以放块元素。常见的行内元素有：span，a,strong，i，del,s等。这些标签a,strong，i，del,s的效果都可以通过css删除效果，如text-decoration:none
+    行内块元素：一类特殊的行内元素，td，img，input，可以设置宽高对齐。
+14.模式转换：display ->  inline 把块元素转为行级元素 -> block转为块级元素  -> inline-block 转为行内块元素
+15.行内元素和行内块元素可以当成文本来看，所以可以控制块的一些参数如：textalign可以用在行内元素上。  块元素在块内，可能因为继承导致也对齐
+
+16.行高等于盒子的高度就可以让单行文本垂直对齐。
+
+17.盒子模型：内容(content)，填充(padding)，边界(border)，外边框(margin)
+
+18.字体相关样式font-size : 16 font-family : "微软雅黑","宋体" 可同时指定多个字体,一个不行用下一个 font-weight:700 = bold 没有单位  normal = 400 font-style:normal italic就两个属性
+#重点强调的单词或者句子可用用<em></em>，然后用font-style：normal来纠正倾斜，有重点强调的标签也可用span替换。
+
+19:字体连写是有顺序的：font:italic bold 16 '宋体' == font-style:italic font-weight:bold font-size:16 font-family:'宋体'
+
+20:字体的外观样式：color : red  
+行间距：line-height : 一般行距比字号大7，8像素就行
+水平对齐方式 ： text-align: left right center 是让h1里面的文字居中对齐，但是h1还是占用一整行的。
+首行缩进：text-indent:1em 一个字宽
+text-decoration:underline下划线 overline上面的线 line-through删除线 none 把原来的s标签或者有线的标签中的线删除
+
+21:比如所有标签定义了一个默认样式，但个别标签要用特殊的，可以单独定义一个类，然后这个标签引用这个类。
+
+22:f12 chrome 调试器，f12是html区，只有结构，右面是css是样式，先看结构有没有问题，然后看css样式有木有问题，加了删除线说明没起效果
+
+23:选择器：选中的后面都会被影响，并不是只影响一个标签，<div><p><span></span><p></div>选中div后里面所有的元素都会被影响
+多类名选择器：在一个div里面只能有一个class属性，但可以一个class=多个类<div class = 'red font20'></div>，不分先后，但后面的样式会覆盖前面的样式
+id选择器：#id
+通配符选择器：*
+后代（包含）选择器:<div><p>123</p> </div>  div p   中间用空格隔开 只要后代都被选择
+子代选择器:<ul><li><a><div></div></li><p>123</p> </ul>      ul li > a 后代中只选亲儿子
+并集选择器：div,p,span  多个标签，类等单一选择器多个同时声明。
+交集选择器：<div class = red></div>  <p class = 'red'></p> div.red可以让div变red而不会让p变红色  第一个是标签选择器和第二个是类或id选择器混合用
+伪类选择器：主要针对a标签，用于向某些选择器添加特殊效果，类选择器加一个点，伪类加两个点
+重点链接伪类选择器
+:link 未访问链接
+:visit 已访问链接
+:hover 移动到链接
+:actve 选定的链接
+a:link {
+	
+}
+a:visit  必须按照顺序写
+
+24:顶线：最高，底线：最下面，基线：文字底部最高的部分，中线：顶线基线中间，基线和基线距离为行高
+ 行高最大的作用可以让一行文字在盒子中垂直居中：让行高等于盒子高度
+ 如果没有行高，默认是0，会顶着盒子上面显示
+
+
+25:css 三大特性 层叠 继承 优先
+层叠性：样式冲突的话，会按照css的书写顺序，以最后的样式为准。后面的样式会覆盖前面的样式 div { color : pink} div {color : red} 展示红色
+继承性：子标签会继承父标签的某些样式，如文本颜色和字号等。
+优先级：!important ∞ > 行内样式1000 > id选择器 0100 > 类（伪类）选择器 0010 > 标签选择器 0001 > *或者继承的权重 0000
+权重可以相加 div p这种后代选择器就会优先级比 p高 0002 > 0001
+继承的权重为0 ，当你有自己的样式话，不论父的权重有多高，有自己的样式，就用自己的样式。
+
+26：背景：background-color背景颜色 background-image 背景图片  
+控制背景图片的平铺方式：background-repeat:repeat 横竖都平铺 repeat-x 横向平铺  repeat-y 竖向平铺 norepeat 不平铺
+控制背景图片的位置，background-position : center right left bottom top 没有先后顺序，只写一个另一个默认居中 垂直水平居中 center center
+                 也可以跟数值 px  x在前，y在后不能颠倒 也可以px和left这种混用
+
+background-attachment: fixed 图片固定不随滚动条滚动
+
+background：背景简写，本身没顺序补过最好按照顺序写可读性好  背景颜色 背景图片 背景平铺 背景滚动 背景位置
+
+背景透明度设置： background-color：rgba（0，0，0，0.5）
+
+
+27：css就是盒子模型，浮动，定位三个重点，其余均是细节
+   盒子模型：内容(content)，填充(padding)，边界(border)，外边框(margin)
+   border:width color style=none solid  一个盒子这三个属性必须都有 连写：border:1px solid red   
+
+   table 合并相邻框，表格边线变细。   table,td{border-collapse:collapse}
+   table 是外围的框，里面的单元格是td
+  
+28:内边距 day 4 10 合适控制文字和边框的距离
+   padding 属性   div {padding : 10px} <div>123</div> 123 可能左边上边明显是10px边距但是实际上，内容部分不只是123，要右键看一下，发现右边和下边也是有内边距的
+   padding 给值可以在内容大于盒子的时候或者和盒子一样大，还有行内元素这种没高和宽的的时候，动态扩展block的宽度和高度,撑大盒子，
+   padding-left padding-right
+   command+ + 放大 - 缩小 0 回归原来大小 在原大小下查看大小值
+   padding 10px 20px 30px 50px  顺时针内边距
+   padding过大会撑大 带有 weight 和height的盒子(多小的padding都会撑大)，还有行内元素这种靠内容撑大的盒子，所以一定要注意
+   div{width:200;height:200} 为了保证div保持在200*200大小需要在设置padding后修改为-> div{width:160;height:160;padding:20} 也就是设置了padding要回来重置盒子大小
+   border设置了也会扩大盒子border设置成10px，盒子就会四边扩大10px
+   盒子宽度=border宽+padding宽+盒子的width属性
+
+29： 外边距
+    margin 10px 20px 30px 50px  顺时针外边距
+    border到外边距之间不能放任何东西
+    不设置margin就是和另一个盒子之家距离是0
+    * {margin : 0; padding:0}  #各种浏览器可能有默认的边距值，清除内外编剧，所有css第一句话
+    text-align-center 是让盒子里面的内容居中对齐
+    div{margin : 0 auto}->上线外边距是0，左右边距自动，会居中  auto意思是左侧右侧自动充满  盒子必须有width否则没法盒子居中
+
+30：day 5 2
+   小图标，logo，超大的背景图场景，用背景图比较多。
+   垂直外边距合并:以上下两个块元素大的margin值为准，解决方案：无法解决，避免就行了。
+   嵌套垂直外边框合并：如果嵌套盒子的话，垂直上可以以大的margin为准
+   解决方案：1.设置border或者padding
+   2.overflow：hidden
+
+31: day 5 3
+    width 和height只对块级元素有用，对行内元素无效 img input除外
+    如果一个子块没有设置weight，则会和父块一样宽，此时，padding不会影响盒子大小，因为padding有效的条件是有width，子盒子没width
+    设置盒子宽度一般优先使用顺序是：width > padding > margin(ie会有bug)
+
+32：day 5 4圆角
+    boder-radius : 10%
+    正方形块 + 50%radius就是圆形
+    boder-radius: 1px 10px
+
+    box-shadow
+
+    transition : 1s
+33:day 5 7
+   css定位机制有三种: 标准（普通）流 浮动 定位
+   标准流就是html的标准布局方式：从上到下，从左到右，块元素独占一行，行元素从左到右排列
+
+   浮动让多个块元素 如div在一行上  即使把div转成inline-block也不方便，缝隙问题，对齐问题都不好解决
+   div{float:left 或者right}
+   浮动脱离标准流，不占用位置，下面的标准流的盒子会上来
+   但是上面标准流占据的位置比如：<div id=1></div> <div id =2 ></div> 2div 不会浮动到1div上面。
+   一般行与行之间用标准流div进行布局
+   同一行内用浮动布局
+
+   如果父盒子里面的一个子盒子浮动，其他子盒子都浮动才能所有子盒子在一行，宽度和大于父块宽度的话被挤到下一行
+   
+   float 浮 漏 特
+   浮：浮动的盒子是浮起来的，在其他标准流盒子上面
+   漏：浮动的盒子不占位置，会给其他盒子漏出来位置，但是文字和图片都还是会占位置
+   特：特别注意转为内联块，
+
+34 ：day 5 9
+    布局和版心（可视区）:是指网页中主体内容所在区域，一般在浏览器中水平居中，常见宽度值为 960px 980px 1000px 1200px等
+    
+    布局流程：
+    1.先确定版心的宽度
+    2.再确定行块有几行
+    3.写html结果
+    4.写css
+    常见行结构，见当天教材
+
+高度height不继承
+
+
+35 ： 通栏写法
+      1.通栏里的内容一般和版型还是对齐的。
+
+      2.导航栏用ur li 来定义
+
+36： h5 的不同：
+     1. css的提升也就是css3，之前只能支持css2
+     2. 语义化标签提升，多了很多标签
+     3. 多了新的api
+
+37：清除浮动 day 6 3
+    父盒子没高度，如果子盒子都浮动，父盒子就变成一条线，撑不开父盒子，浮动是不占位置的。
+    清除浮动就是为了解决父盒子因为子盒子浮动引起内部高度为0的情况
+    选择器{clear:both left right}
+    1.额外标签法：在父盒子内部所有浮动子盒子的最后，加一个div里面赋予参数clear：both  写很多无意义标签，不推荐
+    2.父盒子添加overflow元素：{overflow:hidden|scroll|auto}
+    使用after伪元素清除: {content:'',display:block,height:0,clear:both,visibility:hidden}      ie7以下清除浮动的方法：{*zoom:1}  css设置前面带*，其他浏览器都不执行，ie7以下版本执行  
+    使用before和after双伪元素清除：clearfix:before{content:'',display:talbe} clearfix:after{clear:both}
+
+38:定位 day 6
+   也是浮在空中，但是，可以去任何地方。不受限制
+   定位是由定位模式和边偏移两种类型的属性来控制的，其中：{position:static|relative} 属于定位模式，{top:1px,left:2px,bottom:3px,right:5px} 属于边偏移的属性 ，当position值为static的时候忽略边偏移的属性，当position为其他值时用边偏移属性来控制定位。
+   定位模式：{position:static|relative|absolute|fixed}  静态定位 相对定位 绝对定位 固定定位
+   默认都是static，标准流都是这种，唯一的用处就是取消定位。无法使用边偏移控制盒子位置，所有的边偏移属性失效
+   边偏移: {top:1px,left:2px,bottom:3px,right:5px} 
+
+   相对定位模式两个特点：1.以边偏移来移动位置，但是原来占有的位置，依旧占有;2.每次移动是以自己左上角为基点进行移动,可以移动到父盒子外面去
+
+   绝对定位：1.原来的位置不占有了。2.移动以浏览器当前屏幕大小来对齐的，没有父盒子或者父盒子没定位，子盒子都以浏览器为基准来定位；父盒子有定位（相对，静态，绝对）的话，就根据有定位的最近的父元素来定位
+   
+   子绝父相：子盒子是绝对定位的话，父盒子要用相对定位，一般用这个搭配
+   固定定位:是绝对定位的特例，特性和绝对定位是一样的 position:fixed,移动以浏览器当前屏幕大小来对齐的,无论父盒子有没有定位
+
+   跟浮动一样，元素加入了固定定位或者绝对定位后，就变成了行内块元素，高度和宽度和内容有关系，
+   z-index叠放次序：盒子加入定位后，不占用位置，多个元素会重叠，后面的元素压住前面的元素
+   z-index:2这个属性默认是0，取值越大在层叠元素中越靠上，
+   如果取值相同，则按照盒子书写顺序覆盖
+   后面的值，就是数字没有单位
+   只有各种定位有：相对定位，绝对定位，固定定位，其他的都没有。
+
+39：显示与隐藏 day 7
+   css中有三种隐藏和显示控制的属性：display，visibility，overflow
+   display:none 隐藏某个元素,不再保留位置， block显示某个元素/转换为块级元素，
+   visibility：visible/hidden 隐藏之后保留位置
+   overflow:hidden溢出隐藏，当内容大于盒子大小的时候，溢出的隐藏；scroll：溢出滚动，且总是显示滚动条；auto：溢出滚动，溢出才显示滚动条
+
+40：鼠标样式：
+    cursor：pointer变小手；text文本；move变成十字架；
+    轮廓线：outline：none 取消轮廓线，一般情况全部取消就行了。
+    防止拖拽文本域：resize：none
+    vertical-align：垂直对齐 不影响块级元素的内容对齐，只影响行内元素或者行内块元素
+    white-space:no-wrap强制一行显示，不换行
+    text-overflow：clip：不显示省略号，就是简单裁切断 ellipsis：有溢出则显示省略号 用这个地方：white-space，overflow必须同时使用否则无效。
+
+
+
